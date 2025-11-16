@@ -13,7 +13,7 @@ const HS_APP_CONFIG = {
 /* ---------- Thème clair / sombre ---------- */
 
 function hsInitTheme() {
-  const btn = document.getElementById("theme-toggle");
+  const btn = document.getElementById("theme-switch");
   if (!btn) return;
 
   const saved = localStorage.getItem("hs-theme") || "dark";
