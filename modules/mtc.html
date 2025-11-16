@@ -1,0 +1,37 @@
+<div id="mtc-root">
+
+  <h2>Médecine Traditionnelle Chinoise — MTC</h2>
+
+  <p class="subnote">
+    Exploration des organes, émotions, horaires, déséquilibres et conseils.
+  </p>
+
+  <div class="card">
+    <h3>Horloge des organes (cliquable)</h3>
+
+    <div id="mtc-clock" class="mtc-clock"></div>
+
+    <p class="subnote">Clique sur un secteur de l’horloge pour afficher l’organe, l’émotion, les déséquilibres typiques et les conseils.</p>
+  </div>
+
+  <div class="card">
+    <h3>Questionnaire (pré-diagnostic symbolique)</h3>
+
+    <label><input type="checkbox" id="m-stress"> Stress / irritabilité</label>
+    <label><input type="checkbox" id="m-anxiety"> Anxiété / peur</label>
+    <label><input type="checkbox" id="m-grief"> Tristesse / perte</label>
+    <label><input type="checkbox" id="m-worry"> Rumination / excès mental</label>
+    <label><input type="checkbox" id="m-anger"> Colère / frustration</label>
+
+    <label>Symptômes spécifiques</label>
+    <textarea id="m-notes" rows="3"></textarea>
+
+    <button id="mtc-run" class="btn-primary" type="button">Analyser</button>
+  </div>
+
+  <div class="card">
+    <h3>Résultat</h3>
+    <pre id="mtc-output" class="analysis-output">Aucune analyse.</pre>
+  </div>
+
+</div>
