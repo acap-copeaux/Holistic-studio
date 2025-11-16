@@ -1,0 +1,64 @@
+<div id="analysis-root">
+
+  <h2>Analyse de vie (Jarvis Life)</h2>
+
+  <p class="subnote">
+    Cette analyse est un outil symbolique permettant de clarifier ton axe, ton énergie et tes tendances.
+  </p>
+
+  <form id="analysis-form" class="card">
+    <h3>Données de naissance</h3>
+
+    <label>Prénom</label>
+    <input id="a-firstname" type="text">
+
+    <label>Date de naissance</label>
+    <input id="a-date" type="date">
+
+    <label>Heure</label>
+    <input id="a-time" type="time">
+
+    <label>Lieu</label>
+    <input id="a-place" type="text">
+
+    <label>Intention actuelle</label>
+    <textarea id="a-intent" rows="3"></textarea>
+
+    <hr>
+
+    <h3>Questionnement complémentaire (terrain symbolique)</h3>
+
+    <label><input type="checkbox" id="q-sleep"> Sommeil perturbé</label>
+    <label><input type="checkbox" id="q-stress"> Stress élevé</label>
+    <label><input type="checkbox" id="q-digest"> Digestion sensible</label>
+    <label><input type="checkbox" id="q-pain"> Douleurs récurrentes</label>
+    <label><input type="checkbox" id="q-hyper"> Hypersensibilité émotionnelle</label>
+    <label><input type="checkbox" id="q-burn"> Sensation de surcharge</label>
+
+    <label>Poids approx.</label>
+    <input id="q-weight" type="text">
+
+    <label>Taille approx.</label>
+    <input id="q-height" type="text">
+
+    <label>Médications en cours</label>
+    <input id="q-meds" type="text">
+
+    <label>Allergies / intolérances</label>
+    <input id="q-allergies" type="text">
+
+    <label>Autres précisions</label>
+    <textarea id="q-notes" rows="2"></textarea>
+
+    <hr style="margin: 14px 0;">
+
+    <button class="btn-primary" type="submit">Lancer l'analyse</button>
+  </form>
+
+  <div class="card">
+    <h3>Résultat</h3>
+    <pre id="analysis-output" class="analysis-output">Aucune analyse encore générée.</pre>
+    <button id="analysis-print" class="btn-ghost">Imprimer PDF</button>
+  </div>
+
+</div>
