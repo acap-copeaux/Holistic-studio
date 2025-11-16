@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Armor Vision – Cabinet Virtuel</title>
+<title>Holistic Studio – Armor Vision</title>
 
 <!-- STYLES -->
 <link rel="stylesheet" href="css/main.css">
@@ -14,45 +14,40 @@
 
 <body>
 
-<!-- ============================
-     HEADER / NAVIGATION
-============================ -->
 <header id="header">
-  <div class="logo">ARMOR VISION</div>
+  <div class="logo">HOLISTIC STUDIO</div>
 
   <nav id="nav">
-    <button class="nav-btn" data-page="analysis">Analyse de Vie</button>
-    <button class="nav-btn" data-page="runes">Runes</button>
-    <button class="nav-btn" data-page="yijing">Yi Jing</button>
-    <button class="nav-btn" data-page="mtc">Médecine Chinoise</button>
-    <button class="nav-btn" data-page="totem">Totem Personnel</button>
-    <button class="nav-btn" data-page="remedies">Remèdes</button>
-    <button class="nav-btn" data-page="premium">Premium</button>
-    <button class="nav-btn" data-page="pricing">Tarifs</button>
-    <button class="nav-btn" data-page="contact">Contact</button>
-    <button class="nav-btn" data-page="legal">Confidentialité</button>
+    <button class="nav-btn" data-module="analysis">Analyse de Vie</button>
+    <button class="nav-btn" data-module="runes">Runes</button>
+    <button class="nav-btn" data-module="yijing">Yi Jing</button>
+    <button class="nav-btn" data-module="mtc">MTC</button>
+    <button class="nav-btn" data-module="totem">Totem</button>
+    <button class="nav-btn" data-module="remedies">Remèdes</button>
+    <button class="nav-btn" data-module="premium">Premium</button>
+    <button class="nav-btn" data-module="pricing">Tarifs</button>
+    <button class="nav-btn" data-module="contact">Contact</button>
+    <button class="nav-btn" data-module="legal">Confidentialité</button>
   </nav>
 
   <button id="theme-switch">🌗</button>
 </header>
 
-<!-- ============================
-     CONTENU PRINCIPAL
-============================ -->
 <main id="content">
-  <div class="center">
-    <h1>Armor Vision</h1>
-    <p>Cabinet virtuel d’analyse énergétique, symbolique, runique, MTC et ésotérique.</p>
-    <p>Choisissez un module dans la barre de navigation.</p>
+
+  <!-- PAGE PAR DÉFAUT -->
+  <div id="home-screen" class="center">
+    <h1>Holistic Studio</h1>
+    <p>Cabinet virtuel d’analyse : runes • Yi Jing • MTC • Totem • Énergie • Introspection</p>
   </div>
+
+  <!-- CONTENEUR DES MODULES -->
+  <div id="module-container"></div>
+
 </main>
 
-<!-- ============================
-     SCRIPTS GLOBAUX
-============================ -->
-<script src="js/utils.js"></script>
-<script src="js/app.js"></script>
-<script src="js/runes.js"></script>
+<!-- SCRIPTS GLOBAUX -->
+<script type="module" src="js/app.js"></script>
 
 </body>
 </html>
