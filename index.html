@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Holistic Studio – Armor Vision</title>
+
+  <!-- STYLES -->
+  <link rel="stylesheet" href="css/main.css">
+  <link rel="stylesheet" href="css/theme-dark.css" id="theme-dark">
+  <link rel="stylesheet" href="css/theme-light.css" id="theme-light" disabled>
+</head>
+
+<body data-theme="dark">
+
+  <!-- ============================
+       HEADER / NAVIGATION
+  ============================ -->
+  <header id="header">
+    <div class="logo">HOLISTIC STUDIO</div>
+
+    <nav id="nav">
+      <button class="nav-btn" data-module="analysis">Analyse de vie</button>
+      <button class="nav-btn" data-module="runes">Runes</button>
+      <button class="nav-btn" data-module="yijing">Yi Jing</button>
+      <button class="nav-btn" data-module="mtc">Médecine chinoise</button>
+      <button class="nav-btn" data-module="totem">Totem personnel</button>
+      <button class="nav-btn" data-module="remedies">Remèdes</button>
+      <button class="nav-btn" data-module="premium">Premium</button>
+      <button class="nav-btn" data-module="pricing">Tarifs</button>
+      <button class="nav-btn" data-module="contact">Contact</button>
+      <button class="nav-btn" data-module="legal">Confidentialité</button>
+    </nav>
+
+    <button id="theme-toggle" class="theme-toggle">Mode clair</button>
+  </header>
+
+  <!-- ============================
+       CONTENU PRINCIPAL
+  ============================ -->
+  <main id="main">
+    <div id="module-container" class="module-container">
+      <div class="center">
+        <h1>Holistic Studio</h1>
+        <p>Cabinet virtuel d’analyse énergétique & symbolique (Jarvis / Armor Vision).</p>
+        <p>Choisis un module dans la barre de navigation.</p>
+      </div>
+    </div>
+  </main>
+
+  <!-- ============================
+       SCRIPTS (ordre important)
+  ============================ -->
+  <script src="js/utils.js"></script>
+  <script src="js/premium.js"></script>
+  <script src="js/runes.js"></script>
+  <!-- plus tard : yijing.js, mtc.js, totem.js, remedies.js, analysis.js, etc. -->
+  <script src="js/app.js"></script>
+</body>
+</html>
