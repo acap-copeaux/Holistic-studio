@@ -5,56 +5,43 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Holistic Studio – Armor Vision</title>
 
-  <!-- STYLES -->
   <link rel="stylesheet" href="css/main.css">
   <link rel="stylesheet" href="css/theme.css">
 
-  <!-- PWA -->
   <link rel="manifest" href="manifest.json">
-  <meta name="theme-color" content="#000000">
+  <meta name="theme-color" content="#0b0f16">
   <link rel="apple-touch-icon" href="icons/icon-192.png">
-
 </head>
 
 <body>
 
   <!-- INTRO -->
   <div id="hs-intro-overlay">
-    <div class="intro-ring">
-      <div class="intro-core"></div>
-    </div>
+    <div class="intro-ring"><div class="intro-core"></div></div>
     <div class="intro-text">HOLISTIC STUDIO</div>
   </div>
 
-  <!-- SIDEBAR BACKDROP -->
-  <div id="hs-sidebar-backdrop"></div>
+  <!-- BACKDROP Sidebar -->
+  <div id="hs-sidebar-backdrop" onclick="hsCloseSidebar()"></div>
 
-  <!-- ===========================
-          HEADER
-  ============================ -->
+  <!-- HEADER -->
   <header id="hs-header">
-
-    <!-- MENU MOBILE -->
     <button id="hs-menu-toggle" class="menu-btn" onclick="hsToggleSidebar()">☰</button>
 
-    <!-- LOGO (glow dynamique basé sur thème) -->
-    <div class="logo-block">
-      <img id="hs-logo" src="img/bear-totem.png" alt="Holistic Logo">
-      <span class="logo-text">Holistic Studio</span>
+    <div class="logo-container">
+      <img id="hs-logo" src="assets/logo-holistic.svg" class="glow-anim" alt="Holistic Logo" />
     </div>
 
     <div class="header-right">
       <button data-module="settings" class="nav-btn nav-icon">⚙️</button>
       <button id="theme-toggle" class="theme-btn" onclick="hsToggleDarkLight()">🌗</button>
     </div>
-
   </header>
 
-  <!-- ===========================
-          SIDEBAR MOBILE
-  ============================ -->
+  <!-- SIDEBAR -->
   <aside id="hs-sidebar">
     <h2>Navigation</h2>
+
     <button data-module="analysis" class="nav-btn">Analyse</button>
     <button data-module="runes" class="nav-btn">Runes</button>
     <button data-module="premium" class="nav-btn">Premium</button>
@@ -68,9 +55,7 @@
     <button data-module="settings" class="nav-btn">Paramètres</button>
   </aside>
 
-  <!-- ===========================
-          NAV TOP (DESKTOP)
-  ============================ -->
+  <!-- TOP NAV DESKTOP -->
   <nav id="hs-nav">
     <button data-module="analysis" class="nav-btn">Analyse</button>
     <button data-module="runes" class="nav-btn">Runes</button>
@@ -82,41 +67,25 @@
     <button data-module="pricing" class="nav-btn">Tarifs</button>
     <button data-module="contact" class="nav-btn">Contact</button>
     <button data-module="legal" class="nav-btn">Légal</button>
-    <button data-module="settings" class="nav-btn">⚙️</button>
   </nav>
 
-  <!-- ===========================
-          CONTENU
-  ============================ -->
   <main id="hs-main">
 
-    <!-- LOADER -->
     <div id="hs-loader" class="hud-loader">
       <div class="hud-ring"></div>
       <div class="hud-dot"></div>
     </div>
 
-    <!-- MODULES -->
+    <div id="hs-scanner"></div>
+
     <div id="module-container"></div>
 
   </main>
 
-  <!-- ===========================
-          SCRIPTS
-  ============================ -->
   <script src="js/utils.js"></script>
   <script src="js/premium.js"></script>
   <script src="js/runes.js"></script>
   <script src="js/app.js"></script>
 
-  <!-- PWA SERVICE WORKER -->
-  <script>
-    if ("serviceWorker" in navigator) {
-      navigator.serviceWorker.register("sw.js")
-        .catch(err => console.warn("SW registration error:", err));
-    }
-  </script>
-
 </body>
 </html>
-
