@@ -1,5 +1,5 @@
 /* ============================================================
-   app.js — Kernel Holistic Studio
+   app.js — Holistic Studio
 ============================================================ */
 
 const HS_APP_CONFIG = {
@@ -7,124 +7,105 @@ const HS_APP_CONFIG = {
   defaultModule: "analysis"
 };
 
-/* ================== THEMES ================== */
+/* ---------------- THEME ---------------- */
 
 function hsInitTheme() {
-  let current = localStorage.getItem("holistic-theme") || "dark-2"; // X-Vision par défaut
+  let current = localStorage.getItem("holistic-theme") || "dark-1";
   document.body.setAttribute("data-theme", current);
 
-  // Pour settings.html
-  window.hsSetTheme = function (newTheme) {
-    localStorage.setItem("holistic-theme", newTheme);
-    document.body.setAttribute("data-theme", newTheme);
+  window.hsSetTheme = function(t) {
+    localStorage.setItem("holistic-theme", t);
+    document.body.setAttribute("data-theme", t);
   };
 
-  // Bascule rapide clair/sombre en conservant la variante
-  window.hsToggleDarkLight = function () {
-    let cur = localStorage.getItem("holistic-theme") || "dark-2";
-    const [mode, variant] = cur.split("-");
-    const newMode = mode === "dark" ? "light" : "dark";
-    const newTheme = `${newMode}-${variant}`;
-    localStorage.setItem("holistic-theme", newTheme);
-    document.body.setAttribute("data-theme", newTheme);
+  window.hsToggleDarkLight = function() {
+    let cur = localStorage.getItem("holistic-theme") || "dark-1";
+    const [m, v] = cur.split("-");
+    const nm = m === "dark" ? "light" : "dark";
+    const nt = `${nm}-${v}`;
+    localStorage.setItem("holistic-theme", nt);
+    document.body.setAttribute("data-theme", nt);
   };
 }
 
-/* ================== UTILS MODULE ================== */
+/* -------- ANIMATIONS (ON/LITE/OFF) -------- */
 
-async function hsLoadModuleHTML(moduleName) {
-  const path = `${HS_APP_CONFIG.modulesPath}${moduleName}.html?_=${Date.now()}`;
-  try {
-    const res = await fetch(path);
-    if (!res.ok) throw new Error("HTTP " + res.status);
-    return await res.text();
-  } catch (err) {
-    console.error("Erreur module", moduleName, err);
-    return `<div class="card error">Impossible de charger <strong>${moduleName}</strong>.</div>`;
-  }
+function hsInitAnimSettings() {
+  const lvl = localStorage.getItem("hs-anim-level") || "full";
+  document.body.setAttribute("data-anim", lvl);
 }
 
-function hsCallModuleInit(moduleName, container) {
-  const fn = window[`HS_${moduleName}_init`];
-  if (typeof fn === "function") fn(container);
+/* ---------------- SIDEBAR ---------------- */
+
+function hsOpenSidebar() {
+  hs$("#hs-sidebar").classList.add("open");
+  hs$("#hs-sidebar-backdrop").classList.add("visible");
 }
 
-/* ================== CHARGEMENT MODULE ================== */
+function hsCloseSidebar() {
+  hs$("#hs-sidebar").classList.remove("open");
+  hs$("#hs-sidebar-backdrop").classList.remove("visible");
+}
 
-async function hsLoadModule(moduleName) {
-  const container = HS_utils.hs$("#module-container");
-  const loader = HS_utils.hs$("#hs-loader");
-  if (!container || !loader) return;
+function hsToggleSidebar() {
+  const s = hs$("#hs-sidebar");
+  s.classList.contains("open") ? hsCloseSidebar() : hsOpenSidebar();
+}
+
+/* ---------------- MODULE LOADER ---------------- */
+
+async function hsLoadModuleHTML(name) {
+  const res = await fetch(`${HS_APP_CONFIG.modulesPath}${name}.html?_=${Date.now()}`);
+  if (!res.ok) return hsErrorBox(`Module introuvable : ${name}`);
+  return res.text();
+}
+
+async function hsLoadModule(name) {
+  const cont = hs$("#module-container");
+  const loader = hs$("#hs-loader");
 
   loader.style.display = "block";
-  container.style.display = "none";
+  cont.style.display = "none";
 
-  const html = await hsLoadModuleHTML(moduleName);
-  container.innerHTML = html;
+  /* scanner animation */
+  const sc = hs$("#hs-scanner");
+  if (document.body.dataset.anim === "full") {
+    sc.classList.remove("active");
+    void sc.offsetWidth;
+    sc.classList.add("active");
+  }
+
+  cont.innerHTML = await hsLoadModuleHTML(name);
 
   loader.style.display = "none";
-  container.style.display = "block";
+  cont.style.display = "block";
 
-  hsCallModuleInit(moduleName, container);
+  const fn = window[`HS_${name}_init`];
+  if (typeof fn === "function") fn(cont);
 }
 
-/* ================== NAVIGATION ================== */
+/* ---------------- NAVIGATION ---------------- */
 
 function hsInitNavigation() {
-  const buttons = HS_utils.hs$all("[data-module]");
-  if (!buttons.length) return;
-
-  buttons.forEach(btn => {
+  const btns = hs$all("[data-module]");
+  btns.forEach(btn => {
     btn.addEventListener("click", () => {
-      const mod = btn.dataset.module;
-      buttons.forEach(b => b.classList.remove("active"));
+      btns.forEach(b => b.classList.remove("active"));
       btn.classList.add("active");
-      hsLoadModule(mod);
-
-      // fermeture sidebar mobile si ouverte
-      document.body.classList.remove("sidebar-open");
+      hsLoadModule(btn.dataset.module);
+      hsCloseSidebar();
     });
   });
 
-  const first = buttons[0];
-  if (first) {
-    first.classList.add("active");
-    hsLoadModule(HS_APP_CONFIG.defaultModule);
-  }
+  btns[0].classList.add("active");
+  hsLoadModule(HS_APP_CONFIG.defaultModule);
 }
 
-/* ================== SIDEBAR ================== */
-
-function hsToggleSidebar() {
-  document.body.classList.toggle("sidebar-open");
-}
-
-function hsInitSidebar() {
-  const backdrop = HS_utils.hs$("#hs-sidebar-backdrop");
-  if (backdrop) backdrop.addEventListener("click", () => {
-    document.body.classList.remove("sidebar-open");
-  });
-
-  // Gesture swipe depuis bord gauche (simple)
-  let startX = null;
-  window.addEventListener("touchstart", e => {
-    if (e.touches[0].clientX < 24) startX = e.touches[0].clientX;
-  });
-  window.addEventListener("touchend", e => {
-    if (startX !== null) {
-      const endX = e.changedTouches[0].clientX;
-      if (endX - startX > 40) {
-        document.body.classList.add("sidebar-open");
-      }
-    }
-    startX = null;
-  });
-}
-
-/* ================== BOOT ================== */
+/* ---------------- BOOT ---------------- */
 
 document.addEventListener("DOMContentLoaded", () => {
   hsInitTheme();
-  hsInitSidebar();
+  hsInitAnimSettings();
   hsInitNavigation();
+  HS_utils.hsInitSwipeSidebar();
 });
