@@ -74,3 +74,74 @@ body {
     font-size: 0.85rem;
   }
 }
+
+/* ============================
+   MENU LATERAL MOBILE
+============================ */
+
+.menu-btn {
+  background: transparent;
+  border-radius: 999px;
+  border: 1px solid transparent;
+  padding: 6px 10px;
+  font-size: 1.1rem;
+  cursor: pointer;
+}
+
+/* Backdrop sombre derrière le menu */
+#hs-sidebar-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.4);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.25s ease;
+  z-index: 1500;
+}
+
+body.sidebar-open #hs-sidebar-backdrop {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+/* Desktop : nav classique */
+#hs-nav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  padding: 8px 18px 12px;
+}
+
+/* Mobile : nav transformée en menu latéral */
+@media (max-width: 800px) {
+
+  #hs-main {
+    padding-top: 12px;
+  }
+
+  #hs-nav {
+    position: fixed;
+    left: -260px;
+    top: 0;
+    width: 240px;
+    height: 100%;
+    background: var(--bg);
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 80px 16px 16px;
+    gap: 10px;
+    box-shadow: 8px 0 18px rgba(0,0,0,0.5);
+    transition: left 0.28s ease;
+    z-index: 2000;
+  }
+
+  body.sidebar-open #hs-nav {
+    left: 0;
+  }
+
+  /* On évite de réduire la nav sur desktop, seulement mobile */
+  .nav-btn {
+    width: 100%;
+    text-align: left;
+  }
+}
