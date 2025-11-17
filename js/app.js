@@ -17,15 +17,14 @@ function hsInitTheme() {
     const toggle = document.querySelector("#theme-toggle");
     if (!toggle) return;
 
-    // Thème par défaut : sombre
     let current = localStorage.getItem("holistic-theme") || "dark";
 
-    hsApplyTheme(current);
+    document.body.setAttribute("data-theme", current);
 
     toggle.addEventListener("click", () => {
         current = current === "dark" ? "light" : "dark";
         localStorage.setItem("holistic-theme", current);
-        hsApplyTheme(current);
+        document.body.setAttribute("data-theme", current);
     });
 }
 
