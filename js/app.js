@@ -1,5 +1,11 @@
 /* ============================================================
-   app.js — Holistic Studio
+   app.js — Kernel principal Holistic Studio
+   - Gestion des thèmes (6 thèmes)
+   - Gestion des animations (off / low / medium / full)
+   - Loader + intro Armor Vision
+   - Navigation (top + sidebar)
+   - Swipe latéral
+   - Chargement des modules HTML
 ============================================================ */
 
 const HS_APP_CONFIG = {
@@ -7,105 +13,230 @@ const HS_APP_CONFIG = {
   defaultModule: "analysis"
 };
 
-/* ---------------- THEME ---------------- */
+/* ============================================================
+   THEMES
+============================================================ */
 
 function hsInitTheme() {
-  let current = localStorage.getItem("holistic-theme") || "dark-1";
-  document.body.setAttribute("data-theme", current);
+  let theme = localStorage.getItem("holistic-theme") || "dark-2";
+  document.body.setAttribute("data-theme", theme);
 
-  window.hsSetTheme = function(t) {
-    localStorage.setItem("holistic-theme", t);
-    document.body.setAttribute("data-theme", t);
+  window.hsSetTheme = function (newTheme) {
+    if (!newTheme) return;
+    document.body.setAttribute("data-theme", newTheme);
+    localStorage.setItem("holistic-theme", newTheme);
   };
 
-  window.hsToggleDarkLight = function() {
-    let cur = localStorage.getItem("holistic-theme") || "dark-1";
-    const [m, v] = cur.split("-");
-    const nm = m === "dark" ? "light" : "dark";
-    const nt = `${nm}-${v}`;
-    localStorage.setItem("holistic-theme", nt);
-    document.body.setAttribute("data-theme", nt);
+  window.hsToggleDarkLight = function () {
+    let current = localStorage.getItem("holistic-theme") || "dark-2";
+    let [mode, variant] = current.split("-");
+    if (!variant) variant = "2";
+    const newMode = mode === "dark" ? "light" : "dark";
+    const newTheme = `${newMode}-${variant}`;
+    document.body.setAttribute("data-theme", newTheme);
+    localStorage.setItem("holistic-theme", newTheme);
   };
 }
 
-/* -------- ANIMATIONS (ON/LITE/OFF) -------- */
+/* ============================================================
+   ANIMATIONS (Armor Vision)
+============================================================ */
 
-function hsInitAnimSettings() {
-  const lvl = localStorage.getItem("hs-anim-level") || "full";
-  document.body.setAttribute("data-anim", lvl);
+function hsInitAnim() {
+  let level = localStorage.getItem("hs-anim") || "medium";
+  document.body.setAttribute("data-anim", level);
+
+  window.hsSetAnim = function (newLevel) {
+    if (!newLevel) return;
+    document.body.setAttribute("data-anim", newLevel);
+    localStorage.setItem("hs-anim", newLevel);
+  };
 }
 
-/* ---------------- SIDEBAR ---------------- */
+/* ============================================================
+   INTRO / LOADER D'OUVERTURE
+============================================================ */
 
-function hsOpenSidebar() {
-  hs$("#hs-sidebar").classList.add("open");
-  hs$("#hs-sidebar-backdrop").classList.add("visible");
+function hsInitIntro() {
+  const intro = document.getElementById("hs-intro-overlay");
+  if (!intro) return;
+
+  const hideIntro = () => {
+    if (intro.classList.contains("hs-intro-hidden")) return;
+    intro.classList.add("hs-intro-hidden");
+    setTimeout(() => {
+      intro.style.display = "none";
+    }, 550);
+  };
+
+  // clic pour passer
+  intro.addEventListener("click", hideIntro);
+
+  // disparition auto après 2,2 s
+  setTimeout(hideIntro, 2200);
 }
 
-function hsCloseSidebar() {
-  hs$("#hs-sidebar").classList.remove("open");
-  hs$("#hs-sidebar-backdrop").classList.remove("visible");
-}
+/* ============================================================
+   LOADER / MODULES
+============================================================ */
 
-function hsToggleSidebar() {
-  const s = hs$("#hs-sidebar");
-  s.classList.contains("open") ? hsCloseSidebar() : hsOpenSidebar();
-}
-
-/* ---------------- MODULE LOADER ---------------- */
-
-async function hsLoadModuleHTML(name) {
-  const res = await fetch(`${HS_APP_CONFIG.modulesPath}${name}.html?_=${Date.now()}`);
-  if (!res.ok) return hsErrorBox(`Module introuvable : ${name}`);
-  return res.text();
-}
-
-async function hsLoadModule(name) {
-  const cont = hs$("#module-container");
-  const loader = hs$("#hs-loader");
-
-  loader.style.display = "block";
-  cont.style.display = "none";
-
-  /* scanner animation */
-  const sc = hs$("#hs-scanner");
-  if (document.body.dataset.anim === "full") {
-    sc.classList.remove("active");
-    void sc.offsetWidth;
-    sc.classList.add("active");
+async function hsLoadModuleHTML(moduleName) {
+  const path = `${HS_APP_CONFIG.modulesPath}${moduleName}.html?_=${Date.now()}`;
+  try {
+    const res = await fetch(path);
+    if (!res.ok) throw new Error("HTTP " + res.status);
+    return await res.text();
+  } catch (err) {
+    console.error("Erreur de chargement du module", moduleName, err);
+    return window.HS_utils
+      ? window.HS_utils.hsErrorBox(
+          `Impossible de charger le module <strong>${moduleName}</strong>.`
+        )
+      : `<div class="card error-card">Erreur de chargement du module ${moduleName}.</div>`;
   }
+}
 
-  cont.innerHTML = await hsLoadModuleHTML(name);
+function hsCallModuleInit(moduleName, container) {
+  const fn = window[`HS_${moduleName}_init`];
+  if (typeof fn === "function") fn(container);
+}
+
+async function hsLoadModule(moduleName) {
+  const container = HS_utils.hs$("#module-container");
+  const loader = HS_utils.hs$("#hs-loader");
+  if (!container || !loader) return;
+
+  loader.style.display = "flex";
+  container.style.display = "none";
+
+  const html = await hsLoadModuleHTML(moduleName);
+  container.innerHTML = html;
 
   loader.style.display = "none";
-  cont.style.display = "block";
+  container.style.display = "block";
 
-  const fn = window[`HS_${name}_init`];
-  if (typeof fn === "function") fn(cont);
+  hsCallModuleInit(moduleName, container);
 }
 
-/* ---------------- NAVIGATION ---------------- */
+/* ============================================================
+   NAVIGATION (top + sidebar)
+============================================================ */
 
 function hsInitNavigation() {
-  const btns = hs$all("[data-module]");
-  btns.forEach(btn => {
+  const buttons = HS_utils.hs$all("[data-module]");
+  if (!buttons.length) return;
+
+  function activateButtons(moduleName) {
+    buttons.forEach((btn) => {
+      if (btn.dataset.module === moduleName) {
+        btn.classList.add("active");
+      } else {
+        btn.classList.remove("active");
+      }
+    });
+  }
+
+  buttons.forEach((btn) => {
     btn.addEventListener("click", () => {
-      btns.forEach(b => b.classList.remove("active"));
-      btn.classList.add("active");
-      hsLoadModule(btn.dataset.module);
+      const mod = btn.dataset.module;
+      if (!mod) return;
+      activateButtons(mod);
+      hsLoadModule(mod);
       hsCloseSidebar();
     });
   });
 
-  btns[0].classList.add("active");
-  hsLoadModule(HS_APP_CONFIG.defaultModule);
+  // module par défaut
+  const def = HS_APP_CONFIG.defaultModule;
+  activateButtons(def);
+  hsLoadModule(def);
 }
 
-/* ---------------- BOOT ---------------- */
+/* ============================================================
+   SIDEBAR + SWIPE
+============================================================ */
+
+function hsOpenSidebar() {
+  document.body.classList.add("sidebar-open");
+}
+
+function hsCloseSidebar() {
+  document.body.classList.remove("sidebar-open");
+}
+
+function hsToggleSidebar() {
+  document.body.classList.toggle("sidebar-open");
+}
+
+function hsInitSidebar() {
+  const menuBtn = HS_utils.hs$("#hs-menu-toggle");
+  const backdrop = HS_utils.hs$("#hs-sidebar-backdrop");
+
+  if (menuBtn) menuBtn.addEventListener("click", hsToggleSidebar);
+  if (backdrop) backdrop.addEventListener("click", hsCloseSidebar);
+
+  // swipe
+  let startX = 0;
+  let currentX = 0;
+  let touching = false;
+
+  const THRESHOLD = 50; // px
+  const EDGE = 40;      // zone de départ près du bord
+
+  document.addEventListener(
+    "touchstart",
+    (e) => {
+      if (e.touches.length !== 1) return;
+      const touch = e.touches[0];
+      startX = currentX = touch.clientX;
+      touching = true;
+    },
+    { passive: true }
+  );
+
+  document.addEventListener(
+    "touchmove",
+    (e) => {
+      if (!touching) return;
+      const touch = e.touches[0];
+      currentX = touch.clientX;
+    },
+    { passive: true }
+  );
+
+  document.addEventListener(
+    "touchend",
+    () => {
+      if (!touching) return;
+      const dx = currentX - startX;
+      const sidebarOpen = document.body.classList.contains("sidebar-open");
+
+      if (!sidebarOpen) {
+        // ouverture : partir du bord gauche
+        if (startX < EDGE && dx > THRESHOLD) {
+          hsOpenSidebar();
+        }
+      } else {
+        // fermeture : swipe vers la gauche
+        if (dx < -THRESHOLD) {
+          hsCloseSidebar();
+        }
+      }
+
+      touching = false;
+    },
+    { passive: true }
+  );
+}
+
+/* ============================================================
+   BOOT
+============================================================ */
 
 document.addEventListener("DOMContentLoaded", () => {
   hsInitTheme();
-  hsInitAnimSettings();
+  hsInitAnim();
+  hsInitIntro();
+  hsInitSidebar();
   hsInitNavigation();
-  HS_utils.hsInitSwipeSidebar();
 });
