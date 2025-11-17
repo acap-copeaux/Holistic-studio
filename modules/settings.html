@@ -1,32 +1,75 @@
-<div class="card">
-  <h2>Paramètres</h2>
+<section class="hs-section">
+  <div class="card hs-settings-card">
+    <h2>Paramètres</h2>
 
-  <h3>Thème visuel</h3>
-  <select id="hs-theme-select">
-    <option value="dark-1">Sombre Bleu</option>
-    <option value="dark-2">Sombre Orange</option>
-    <option value="dark-3">Sombre Vert</option>
-    <option value="light-1">Clair Bleu</option>
-    <option value="light-2">Clair Orange</option>
-    <option value="light-3">Clair Vert</option>
-  </select>
+    <div class="hs-settings-grid">
+      <!-- Thème visuel -->
+      <div class="hs-setting-block">
+        <h3>Thème visuel</h3>
+        <p class="hs-setting-help">
+          Choisis le style global de l’interface (couleurs, ambiance).
+        </p>
+        <div class="hs-field">
+          <label for="hs-theme-select">Thème</label>
+          <select id="hs-theme-select">
+            <option value="dark-1">Sombre Bleu (Armor Vision)</option>
+            <option value="dark-2">Sombre Orange (X-Vision)</option>
+            <option value="dark-3">Sombre Vert (SHIELD)</option>
+            <option value="light-1">Clair Bleu</option>
+            <option value="light-2">Clair Orange</option>
+            <option value="light-3">Clair Vert</option>
+          </select>
+        </div>
+      </div>
 
-  <h3>Animations</h3>
-  <select id="anim-level">
-    <option value="off">Désactivées</option>
-    <option value="lite">Légères</option>
-    <option value="full">Complètes</option>
-  </select>
-</div>
+      <!-- Animations -->
+      <div class="hs-setting-block">
+        <h3>Animations</h3>
+        <p class="hs-setting-help">
+          Contrôle l’intensité des effets Armor Vision (glow, scanner, pulses).
+        </p>
+        <div class="hs-field">
+          <label for="hs-anim-select">Niveau d’animations</label>
+          <select id="hs-anim-select">
+            <option value="off">Désactivées</option>
+            <option value="low">Légères</option>
+            <option value="medium">Standard Armor Vision</option>
+            <option value="full">Mode Jarvis complet</option>
+          </select>
+        </div>
+      </div>
+    </div>
+
+    <div class="hs-settings-footer">
+      <p>
+        Les choix sont mémorisés sur cet appareil.  
+        Tu peux fermer ou recharger la page : Holistic Studio se rouvrira avec les mêmes paramètres.
+      </p>
+    </div>
+  </div>
+</section>
 
 <script>
-document.querySelector("#hs-theme-select").addEventListener("change", e => {
-  hsSetTheme(e.target.value);
-});
+(function () {
+  const themeSelect = document.getElementById("hs-theme-select");
+  const animSelect  = document.getElementById("hs-anim-select");
 
-document.querySelector("#anim-level").addEventListener("change", e => {
-  const level = e.target.value;
-  localStorage.setItem("hs-anim-level", level);
-  document.body.setAttribute("data-anim", level);
-});
+  const savedTheme = localStorage.getItem("holistic-theme") || "dark-2";
+  const savedAnim  = localStorage.getItem("hs-anim") || "medium";
+
+  themeSelect.value = savedTheme;
+  animSelect.value  = savedAnim;
+
+  themeSelect.addEventListener("change", () => {
+    const v = themeSelect.value;
+    localStorage.setItem("holistic-theme", v);
+    if (window.hsSetTheme) window.hsSetTheme(v);
+  });
+
+  animSelect.addEventListener("change", () => {
+    const v = animSelect.value;
+    localStorage.setItem("hs-anim", v);
+    if (window.hsSetAnim) window.hsSetAnim(v);
+  });
+})();
 </script>
