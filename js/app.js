@@ -272,4 +272,5 @@ document.addEventListener("DOMContentLoaded", () => {
   hsInitAnimations();
   hsInitNavigation();
   hsInitIntro();
+   hsInitSidebarGestures();
 });
