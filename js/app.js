@@ -228,6 +228,8 @@ function hsInitNavigation() {
       buttons.forEach(b => b.classList.remove("active"));
       btn.classList.add("active");
       hsLoadModule(mod);
+       // Si on est sur mobile avec le menu ouvert, on le referme après clic
+      document.body.classList.remove("sidebar-open");
     });
   });
 
