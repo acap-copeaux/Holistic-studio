@@ -11,5 +11,30 @@
   <button onclick="hsSetTheme('light-2')" class="btn">Light 2 – X-Vision Clair</button>
   <button onclick="hsSetTheme('light-3')" class="btn">Light 3 – SHIELD Clair</button>
 
-  <p style="opacity:0.6;margin-top:15px;">Le thème change immédiatement.</p>
+  <hr style="margin:20px 0; opacity:0.4;">
+
+  <h2>Animations</h2>
+
+  <h3>Animation d'intro</h3>
+  <button onclick="hsSetAnimIntro('on')" class="btn">Intro ON</button>
+  <button onclick="hsSetAnimIntro('off')" class="btn">Intro OFF</button>
+
+  <h3>Animations HUD (nav, glow visuel)</h3>
+  <button onclick="hsSetAnimHud('off')" class="btn">OFF</button>
+  <button onclick="hsSetAnimHud('light')" class="btn">LÉGER</button>
+  <button onclick="hsSetAnimHud('full')" class="btn">COMPLET</button>
+
+  <h3>Scan vertical HUD (au changement de thème)</h3>
+  <button onclick="hsSetAnimScan('off')" class="btn">OFF</button>
+  <button onclick="hsSetAnimScan('light')" class="btn">LÉGER</button>
+  <button onclick="hsSetAnimScan('full')" class="btn">COMPLET</button>
+
+  <h3>Survol premium des cartes</h3>
+  <button onclick="hsSetAnimHover('off')" class="btn">OFF</button>
+  <button onclick="hsSetAnimHover('on')" class="btn">ON</button>
+
+  <p style="opacity:0.6;margin-top:15px;font-size:0.9rem;">
+    Les réglages sont mémorisés dans ton navigateur.  
+    Tu peux proposer par défaut un mode <strong>LÉGER</strong> pour les clients sensibles aux animations.
+  </p>
 </div>
