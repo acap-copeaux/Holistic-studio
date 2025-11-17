@@ -1,126 +1,232 @@
 /* ============================================================
-   THEMES HOLISTIC STUDIO
+   HOLISTIC STUDIO — SYSTEME DE THEMES
    3 thèmes sombres + 3 thèmes clairs
-   Utilisés via body[data-theme="xxx"]
-============================================================ */
+   ============================================================ */
 
-/* Sombre 1 — Armor Vision Bleu */
+/* Variables par défaut */
+:root {
+  --bg:#000;
+  --fg:#fff;
+  --accent:#4aa8ff;
+  --card:#111;
+  --glow:rgba(74,168,255,0.6);
+}
+
+/* ============================================================
+   THEME SOMBRE 1 — Armor Vision Bleu
+============================================================ */
 body[data-theme="dark-1"] {
-  --bg: #05070b;
+  --bg: #0b0f16;
   --fg: #d9e6ff;
   --accent: #4aa8ff;
-  --accent-soft: rgba(74, 168, 255, 0.6);
-  --card: #101621;
-  --field-bg: #0b101a;
-  --field-border: rgba(74, 168, 255, 0.45);
-  --nav-pill-bg: #141b26;
+  --card: #111822;
+  --glow: rgba(74,168,255,0.45);
 }
 
-/* Sombre 2 — X-Vision Orange (défaut) */
+/* ============================================================
+   THEME SOMBRE 2 — X-Vision Orange
+============================================================ */
 body[data-theme="dark-2"] {
-  --bg: #070503;
-  --fg: #ffe8d9;
-  --accent: #ff7f28;
-  --accent-soft: rgba(255, 127, 40, 0.6);
-  --card: #18100b;
-  --field-bg: #120c07;
-  --field-border: rgba(255, 127, 40, 0.55);
-  --nav-pill-bg: #22150e;
+  --bg: #120b06;
+  --fg: #ffeddc;
+  --accent: #ff8b32;
+  --card: #1d140f;
+  --glow: rgba(255,139,50,0.45);
 }
 
-/* Sombre 3 — SHIELD Vert */
+/* ============================================================
+   THEME SOMBRE 3 — SHIELD Vert
+============================================================ */
 body[data-theme="dark-3"] {
-  --bg: #030a06;
-  --fg: #d4ffe8;
+  --bg: #03120b;
+  --fg: #d5ffe9;
   --accent: #2eff95;
-  --accent-soft: rgba(46, 255, 149, 0.6);
-  --card: #07140e;
-  --field-bg: #07120d;
-  --field-border: rgba(46, 255, 149, 0.55);
-  --nav-pill-bg: #0a1b12;
+  --card: #0b1f16;
+  --glow: rgba(46,255,149,0.45);
 }
 
-/* Clair 1 — Armor Vision Clair */
+/* ============================================================
+   THEME CLAIR 1 — Armor Vision Clair
+============================================================ */
 body[data-theme="light-1"] {
   --bg: #f2f8ff;
   --fg: #1b2e40;
   --accent: #0069ce;
-  --accent-soft: rgba(0, 105, 206, 0.6);
   --card: #ffffff;
-  --field-bg: #ffffff;
-  --field-border: rgba(0, 105, 206, 0.35);
-  --nav-pill-bg: #e2ecfb;
-}
-
-/* Clair 2 — X-Vision Clair */
-body[data-theme="light-2"] {
-  --bg: #fff5e9;
-  --fg: #412e1d;
-  --accent: #e06d00;
-  --accent-soft: rgba(224, 109, 0, 0.6);
-  --card: #ffffff;
-  --field-bg: #ffffff;
-  --field-border: rgba(224, 109, 0, 0.35);
-  --nav-pill-bg: #ffe5c7;
-}
-
-/* Clair 3 — SHIELD Clair */
-body[data-theme="light-3"] {
-  --bg: #eafff3;
-  --fg: #003d26;
-  --accent: #00c86a;
-  --accent-soft: rgba(0, 200, 106, 0.6);
-  --card: #ffffff;
-  --field-bg: #ffffff;
-  --field-border: rgba(0, 200, 106, 0.35);
-  --nav-pill-bg: #d5fbe5;
+  --glow: rgba(0,105,206,0.35);
 }
 
 /* ============================================================
-   APPLICATION GENERALE
+   THEME CLAIR 2 — X-Vision Clair
+============================================================ */
+body[data-theme="light-2"] {
+  --bg: #fff5e9;
+  --fg: #3a2719;
+  --accent: #e56f00;
+  --card: #ffffff;
+  --glow: rgba(229,111,0,0.35);
+}
+
+/* ============================================================
+   THEME CLAIR 3 — SHIELD Clair
+============================================================ */
+body[data-theme="light-3"] {
+  --bg: #e7fff3;
+  --fg: #003822;
+  --accent: #00c060;
+  --card: #ffffff;
+  --glow: rgba(0,192,96,0.35);
+}
+
+/* ============================================================
+   Application générale
 ============================================================ */
 
 body {
-  background-color: var(--bg);
+  background: var(--bg);
   color: var(--fg);
+  transition: background 0.3s, color 0.3s;
 }
 
-/* nav pill active */
+.card {
+  background: var(--card);
+  border-radius: 18px;
+  padding: 1.2rem;
+  box-shadow: 0 0 12px rgba(0,0,0,0.25);
+}
+
+/* Boutons NAV */
+.nav-btn {
+  background: var(--card);
+  color: var(--fg);
+  border: 1px solid var(--card);
+  transition: 0.2s;
+}
+
 .nav-btn.active {
   background: var(--accent);
   color: #fff;
-  box-shadow: 0 0 22px var(--accent-soft);
+  box-shadow: 0 0 15px var(--glow);
 }
 
-/* boutons / champs */
-button,
-input,
-select,
-textarea {
+/* Inputs */
+input, select, textarea {
+  background: rgb(from var(--card) r g b / 0.35);
+  border: 1.5px solid var(--accent);
   color: var(--fg);
+  padding: 10px 12px;
+  border-radius: 14px;
 }
 
-/* loader & logo utilisent l'accent */
+/* Checkboxes alignées */
+input[type="checkbox"] {
+  width: 22px;
+  height: 22px;
+  accent-color: var(--accent);
+}
+
+/* ============================================================
+   LOADER DYNAMIQUE (couleur = thème)
+============================================================ */
+
+.hud-loader {
+  display: none;
+  padding: 40px;
+  text-align: center;
+}
+
 .hud-ring {
-  border-color: var(--accent);
-  box-shadow: 0 0 14px var(--accent-soft);
+  width: 60px;
+  height: 60px;
+  border: 4px solid var(--accent);
+  border-top-color: transparent;
+  border-radius: 50%;
+  margin: 0 auto 12px;
+  animation: spin 1s linear infinite;
 }
 
 .hud-dot {
-  background-color: var(--accent);
-  box-shadow: 0 0 10px var(--accent-soft);
+  width: 12px;
+  height: 12px;
+  background: var(--accent);
+  border-radius: 50%;
+  margin: auto;
+  animation: pulse 1s infinite alternate;
 }
 
-.logo-glow img {
-  box-shadow: 0 0 22px var(--accent-soft);
+@keyframes spin {
+  to { transform: rotate(360deg); }
 }
 
-/* scanner */
-.scan-bar {
-  background: linear-gradient(
-    to bottom,
-    transparent,
-    var(--accent-soft),
-    transparent
-  );
+@keyframes pulse {
+  from { transform: scale(0.7); opacity: 0.5; }
+  to   { transform: scale(1); opacity: 1; }
+}
+
+/* ============================================================
+   SCANNER VERTICAL (module-container)
+============================================================ */
+
+.scanner-line {
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: var(--accent);
+  box-shadow: 0 0 15px var(--glow);
+  animation: scanMove 2s ease-in-out infinite;
+  pointer-events: none;
+}
+
+@keyframes scanMove {
+  0% { top: 0; opacity: 0.3; }
+  50% { top: 95%; opacity: 1; }
+  100% { top: 0; opacity: 0.3; }
+}
+
+/* Visible uniquement si animations = ON */
+body.animations-off .scanner-line { display:none; }
+body.animations-low .scanner-line { opacity: 0.45; }
+body.animations-full .scanner-line { opacity:1; }
+
+/* ============================================================
+   INTRO (logo + glow pulse dynamique)
+============================================================ */
+
+#hs-intro-overlay {
+  position: fixed;
+  inset: 0;
+  background: #000;
+  z-index: 999999;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  animation: introFadeOut 1.6s ease forwards;
+  animation-delay: 1.7s;
+  pointer-events: none;
+}
+
+@keyframes introFadeOut {
+  to { opacity: 0; visibility: hidden; }
+}
+
+.intro-logo {
+  width: 200px;
+  height: auto;
+  animation: introPulse 2s ease-in-out infinite;
+}
+
+@keyframes introPulse {
+  0% { filter: drop-shadow(0 0 8px var(--glow)); }
+  50% { filter: drop-shadow(0 0 26px var(--glow)); }
+  100% { filter: drop-shadow(0 0 8px var(--glow)); }
+}
+
+.intro-text {
+  margin-top: 20px;
+  font-size: 1.3rem;
+  letter-spacing: 6px;
+  color: var(--accent);
+  text-shadow: 0 0 12px var(--glow);
 }
