@@ -1,40 +1,32 @@
 <div class="card">
-  <h2>Paramètres d'affichage</h2>
+  <h2>Paramètres</h2>
 
-  <h3>Thèmes sombres</h3>
-  <button onclick="hsSetTheme('dark-1')" class="btn">Dark 1 – Armor Vision Bleu</button>
-  <button onclick="hsSetTheme('dark-2')" class="btn">Dark 2 – X-Vision Orange</button>
-  <button onclick="hsSetTheme('dark-3')" class="btn">Dark 3 – SHIELD Vert</button>
+  <h3>Thème visuel</h3>
+  <select id="hs-theme-select">
+    <option value="dark-1">Sombre Bleu</option>
+    <option value="dark-2">Sombre Orange</option>
+    <option value="dark-3">Sombre Vert</option>
+    <option value="light-1">Clair Bleu</option>
+    <option value="light-2">Clair Orange</option>
+    <option value="light-3">Clair Vert</option>
+  </select>
 
-  <h3>Thèmes clairs</h3>
-  <button onclick="hsSetTheme('light-1')" class="btn">Light 1 – Armor Vision Clair</button>
-  <button onclick="hsSetTheme('light-2')" class="btn">Light 2 – X-Vision Clair</button>
-  <button onclick="hsSetTheme('light-3')" class="btn">Light 3 – SHIELD Clair</button>
-
-  <hr style="margin:20px 0; opacity:0.4;">
-
-  <h2>Animations</h2>
-
-  <h3>Animation d'intro</h3>
-  <button onclick="hsSetAnimIntro('on')" class="btn">Intro ON</button>
-  <button onclick="hsSetAnimIntro('off')" class="btn">Intro OFF</button>
-
-  <h3>Animations HUD (nav, glow visuel)</h3>
-  <button onclick="hsSetAnimHud('off')" class="btn">OFF</button>
-  <button onclick="hsSetAnimHud('light')" class="btn">LÉGER</button>
-  <button onclick="hsSetAnimHud('full')" class="btn">COMPLET</button>
-
-  <h3>Scan vertical HUD (au changement de thème)</h3>
-  <button onclick="hsSetAnimScan('off')" class="btn">OFF</button>
-  <button onclick="hsSetAnimScan('light')" class="btn">LÉGER</button>
-  <button onclick="hsSetAnimScan('full')" class="btn">COMPLET</button>
-
-  <h3>Survol premium des cartes</h3>
-  <button onclick="hsSetAnimHover('off')" class="btn">OFF</button>
-  <button onclick="hsSetAnimHover('on')" class="btn">ON</button>
-
-  <p style="opacity:0.6;margin-top:15px;font-size:0.9rem;">
-    Les réglages sont mémorisés dans ton navigateur.  
-    Tu peux proposer par défaut un mode <strong>LÉGER</strong> pour les clients sensibles aux animations.
-  </p>
+  <h3>Animations</h3>
+  <select id="anim-level">
+    <option value="off">Désactivées</option>
+    <option value="lite">Légères</option>
+    <option value="full">Complètes</option>
+  </select>
 </div>
+
+<script>
+document.querySelector("#hs-theme-select").addEventListener("change", e => {
+  hsSetTheme(e.target.value);
+});
+
+document.querySelector("#anim-level").addEventListener("change", e => {
+  const level = e.target.value;
+  localStorage.setItem("hs-anim-level", level);
+  document.body.setAttribute("data-anim", level);
+});
+</script>
