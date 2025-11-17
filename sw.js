@@ -1,36 +1,41 @@
-// sw.js — Cache simple pour Holistic Studio
-
-const HS_CACHE = "holistic-studio-v1";
-const HS_ASSETS = [
-  "./",
-  "./index.html",
-  "./css/main.css",
-  "./css/theme.css",
-  "./js/app.js",
-  "./js/utils.js",
-  "./img/bear-totem.png"
+const CACHE_NAME = "holistic-cache-v1";
+const ASSETS = [
+  "/holistic-studio/",
+  "/holistic-studio/index.html",
+  "/holistic-studio/css/main.css",
+  "/holistic-studio/css/theme.css",
+  "/holistic-studio/js/app.js",
+  "/holistic-studio/js/utils.js"
 ];
 
 self.addEventListener("install", event => {
   event.waitUntil(
-    caches.open(HS_CACHE).then(cache => cache.addAll(HS_ASSETS))
+    caches.open(CACHE_NAME).then(cache => cache.addAll(ASSETS))
   );
+  self.skipWaiting();
 });
 
 self.addEventListener("activate", event => {
   event.waitUntil(
     caches.keys().then(keys =>
       Promise.all(
-        keys
-          .filter(k => k !== HS_CACHE)
-          .map(k => caches.delete(k))
+        keys.filter(key => key !== CACHE_NAME).map(key => caches.delete(key))
       )
     )
   );
+  self.clients.claim();
 });
 
 self.addEventListener("fetch", event => {
   event.respondWith(
-    caches.match(event.request).then(resp => resp || fetch(event.request))
+    caches.match(event.request).then(resp => {
+      return (
+        resp ||
+        fetch(event.request).then(fetchResp => {
+          return fetchResp;
+        })
+      );
+    })
   );
 });
+
