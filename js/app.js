@@ -3,7 +3,7 @@
    - Navigation entre modules
    - Thème clair / sombre
    - Chargement HTML des modules
-   ============================================================ */
+============================================================ */
 
 const HS_APP_CONFIG = {
   modulesPath: "./modules/",
@@ -12,15 +12,19 @@ const HS_APP_CONFIG = {
 
 /* ===========================================
    THÈME CLAIR / SOMBRE — Version stable
+   (UN SEUL fichier CSS + body[data-theme])
 =========================================== */
 function hsInitTheme() {
     const toggle = document.querySelector("#theme-toggle");
     if (!toggle) return;
 
+    // Thème sauvegardé ou sombre par défaut
     let current = localStorage.getItem("holistic-theme") || "dark";
 
+    // Applique le thème au chargement
     document.body.setAttribute("data-theme", current);
 
+    // Bascule au clic
     toggle.addEventListener("click", () => {
         current = current === "dark" ? "light" : "dark";
         localStorage.setItem("holistic-theme", current);
@@ -28,22 +32,9 @@ function hsInitTheme() {
     });
 }
 
-function hsApplyTheme(mode) {
-    const dark = document.querySelector("#theme-dark");
-    const light = document.querySelector("#theme-light");
-
-    if (mode === "dark") {
-        dark.disabled = false;
-        light.disabled = true;
-        document.body.dataset.theme = "dark";
-    } else {
-        dark.disabled = true;
-        light.disabled = false;
-        document.body.dataset.theme = "light";
-    }
-}
-
-/* ---------- Chargement HTML d’un module ---------- */
+/* ============================================================
+   CHARGEMENT HTML DES MODULES
+============================================================ */
 
 async function hsLoadModuleHTML(moduleName) {
   const path = `${HS_APP_CONFIG.modulesPath}${moduleName}.html?_=${Date.now()}`;
@@ -57,9 +48,7 @@ async function hsLoadModuleHTML(moduleName) {
   }
 }
 
-/* ---------- Initialisation d’un module déjà chargé en JS ---------- */
-/* Convention : chaque module définit window.HS_<nom>_init(container)  */
-
+/* ---------- Initialisation module JS (optionnel) ---------- */
 function hsCallModuleInit(moduleName, container) {
   const fnName = `HS_${moduleName}_init`;
   const initFn = window[fnName];
@@ -72,17 +61,28 @@ function hsCallModuleInit(moduleName, container) {
 
 async function hsLoadModule(moduleName) {
   const container = HS_utils.hs$("#module-container");
+  const loader = HS_utils.hs$("#hs-loader");
   if (!container) return;
 
-  container.innerHTML = `<div class="card">Chargement du module <strong>${moduleName}</strong>…</div>`;
+  // Loader ON
+  loader.style.display = "block";
+  container.style.display = "none";
 
+  // Fetch du module
   const html = await hsLoadModuleHTML(moduleName);
   container.innerHTML = html;
 
+  // Loader OFF
+  loader.style.display = "none";
+  container.style.display = "block";
+
+  // Initialisation module
   hsCallModuleInit(moduleName, container);
 }
 
-/* ---------- Navigation ---------- */
+/* ============================================================
+   NAVIGATION
+============================================================ */
 
 function hsInitNavigation() {
   const buttons = HS_utils.hs$all("[data-module]");
@@ -90,16 +90,19 @@ function hsInitNavigation() {
 
   buttons.forEach(btn => {
     btn.addEventListener("click", () => {
+
       const mod = btn.dataset.module;
 
+      // Surbrillance
       buttons.forEach(b => b.classList.remove("active"));
       btn.classList.add("active");
 
+      // Chargement module
       hsLoadModule(mod);
     });
   });
 
-  // Activer le premier bouton par défaut
+  // Activation du module par défaut
   const first = buttons[0];
   if (first) {
     first.classList.add("active");
@@ -107,9 +110,12 @@ function hsInitNavigation() {
   }
 }
 
-/* ---------- Boot ---------- */
+/* ============================================================
+   BOOT
+============================================================ */
 
 document.addEventListener("DOMContentLoaded", () => {
   hsInitTheme();
   hsInitNavigation();
 });
+                   
