@@ -1,5 +1,5 @@
 /* ============================================================
-   THEMES HOLISTIC STUDIO — 3 sombres + 3 clairs
+   THEMES HOLISTIC STUDIO — 6 thèmes
    S'appliquent via body[data-theme="<id>"]
 ============================================================ */
 
@@ -11,9 +11,9 @@ body[data-theme="dark-1"] {
   --fg: #d9e6ff;
   --fg-soft: #9fb5d9;
   --accent: #4aa8ff;
-  --accent-soft: rgba(74, 168, 255, 0.16);
+  --accent-soft: rgba(74,168,255,0.18);
   --border: rgba(255,255,255,0.06);
-  --input-bg: #060913;
+  --input-bg: #070b14;
 }
 
 /* SOMBRE 2 — X-Vision Orange */
@@ -24,9 +24,9 @@ body[data-theme="dark-2"] {
   --fg: #ffe8d9;
   --fg-soft: #f1bfa0;
   --accent: #ff7f28;
-  --accent-soft: rgba(255, 127, 40, 0.22);
+  --accent-soft: rgba(255,127,40,0.20);
   --border: rgba(255,255,255,0.06);
-  --input-bg: #0c0704;
+  --input-bg: #0d0704;
 }
 
 /* SOMBRE 3 — SHIELD Vert */
@@ -52,7 +52,7 @@ body[data-theme="light-1"] {
   --accent: #0069ce;
   --accent-soft: rgba(0,105,206,0.10);
   --border: rgba(0,0,0,0.08);
-  --input-bg: #f6f9ff;
+  --input-bg: #f7faff;
 }
 
 /* CLAIR 2 — X-Vision Clair */
@@ -65,7 +65,7 @@ body[data-theme="light-2"] {
   --accent: #e06d00;
   --accent-soft: rgba(224,109,0,0.11);
   --border: rgba(0,0,0,0.08);
-  --input-bg: #fff8ef;
+  --input-bg: #fff4e6;
 }
 
 /* CLAIR 3 — SHIELD Clair */
@@ -76,29 +76,32 @@ body[data-theme="light-3"] {
   --fg: #003d26;
   --fg-soft: #2a6d52;
   --accent: #00c86a;
-  --accent-soft: rgba(0,200,106,0.11);
+  --accent-soft: rgba(0,200,106,0.12);
   --border: rgba(0,0,0,0.08);
-  --input-bg: #f4fff9;
+  --input-bg: #f3fff9;
 }
 
-/* Application globale des variables */
+/* ============================================================
+   BASE + STRUCTURE
+============================================================ */
 
 body {
-  background: radial-gradient(circle at top, var(--bg-alt), var(--bg));
+  background: radial-gradient(circle at top left, var(--bg-alt), var(--bg));
   color: var(--fg);
 }
 
+/* Cartes */
 .card {
   background: var(--card);
   border: 1px solid var(--border);
 }
 
+/* Liens */
 a {
   color: var(--accent);
 }
 
-/* Inputs génériques */
-
+/* Inputs / selects / champs */
 input[type="text"],
 input[type="email"],
 input[type="date"],
@@ -111,22 +114,12 @@ select {
   border: 1px solid var(--accent-soft);
 }
 
-input[type="text"]::placeholder,
-input[type="email"]::placeholder,
+input::placeholder,
 textarea::placeholder {
   color: var(--fg-soft);
 }
 
-/* Boutons */
-
-button,
-input[type="submit"],
-input[type="button"] {
-  background: var(--accent);
-  color: #ffffff;
-  border: none;
-}
-
+/* Boutons nav */
 button.nav-btn {
   background: var(--card);
   color: var(--fg);
@@ -135,11 +128,10 @@ button.nav-btn {
 button.nav-btn.active {
   background: var(--accent);
   color: #fff;
-  box-shadow: 0 0 18px var(--accent-soft);
+  box-shadow: 0 0 14px var(--accent-soft);
 }
 
-/* Checkboxes alignées / visibles */
-
+/* Checkboxes */
 .hs-checkbox-row {
   display: flex;
   align-items: center;
@@ -150,4 +142,21 @@ button.nav-btn.active {
   width: 18px;
   height: 18px;
   accent-color: var(--accent);
+}
+
+/* ============================================================
+   GLOW DYNAMIQUE LOGO
+============================================================ */
+
+#hs-logo {
+  width: 52px;
+  height: 52px;
+  filter: drop-shadow(0 0 10px var(--accent));
+  animation: pulseGlow 2.4s ease-in-out infinite;
+}
+
+@keyframes pulseGlow {
+  0%   { filter: drop-shadow(0 0 6px var(--accent)); }
+  50%  { filter: drop-shadow(0 0 22px var(--accent)); }
+  100% { filter: drop-shadow(0 0 6px var(--accent)); }
 }
