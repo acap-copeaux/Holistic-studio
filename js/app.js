@@ -2,6 +2,7 @@
    app.js — Kernel principal Holistic Studio
    - Gestion des thèmes (6 thèmes dans un seul theme.css)
    - Bascule rapide clair/sombre
+   - Réglages d'animations (intro, HUD, scan, hover)
    - Navigation
    - Chargement modules + loader premium
    - Animation d'intro Armor Vision
@@ -19,17 +20,8 @@ function hsInitTheme() {
     let current = localStorage.getItem("holistic-theme") || "dark-1";
     document.body.setAttribute("data-theme", current);
 
+    // Change complètement de thème (boutons de settings)
     window.hsSetTheme = function(newTheme) {
-        localStorage.setItem("holistic-theme", newTheme);
-        document.body.setAttribute("data-theme", newTheme);
-    };
-
-    window.hsToggleDarkLight = function () {
-        let current = localStorage.getItem("holistic-theme") || "dark-1";
-        const [mode, variant] = current.split("-");
-        const newMode = mode === "dark" ? "light" : "dark";
-        const newTheme = `${newMode}-${variant}`;
-
         // petit effet de fondu
         document.body.classList.add("theme-switching");
         setTimeout(() => {
@@ -38,7 +30,88 @@ function hsInitTheme() {
 
         localStorage.setItem("holistic-theme", newTheme);
         document.body.setAttribute("data-theme", newTheme);
+        hsTriggerScanEffect();
     };
+
+    // Bascule rapide clair/sombre (bouton persistant)
+    window.hsToggleDarkLight = function () {
+        let current = localStorage.getItem("holistic-theme") || "dark-1";
+        const [mode, variant] = current.split("-");
+        const newMode = mode === "dark" ? "light" : "dark";
+        const newTheme = `${newMode}-${variant}`;
+
+        document.body.classList.add("theme-switching");
+        setTimeout(() => {
+          document.body.classList.remove("theme-switching");
+        }, 400);
+
+        localStorage.setItem("holistic-theme", newTheme);
+        document.body.setAttribute("data-theme", newTheme);
+        hsTriggerScanEffect();
+    };
+}
+
+/* ============================================================
+   SYSTEME D'ANIMATIONS (intro, HUD, scan, hover)
+============================================================ */
+function hsInitAnimations() {
+    const b = document.body;
+
+    const intro = localStorage.getItem("hs-anim-intro") || "on";
+    const hud   = localStorage.getItem("hs-anim-hud")   || "full";
+    const scan  = localStorage.getItem("hs-anim-scan")  || "light";
+    const hover = localStorage.getItem("hs-anim-hover") || "on";
+
+    b.dataset.animIntro = intro;
+    b.dataset.animHud   = hud;
+    b.dataset.animScan  = scan;
+    b.dataset.animHover = hover;
+
+    window.hsSetAnimIntro = function(mode) {
+        localStorage.setItem("hs-anim-intro", mode);
+        b.dataset.animIntro = mode;
+        // si OFF, on supprime immédiatement l'intro si déjà présente
+        const introEl = document.getElementById("hs-intro-overlay");
+        if (mode === "off" && introEl && introEl.parentNode) {
+            introEl.parentNode.removeChild(introEl);
+        }
+    };
+
+    window.hsSetAnimHud = function(mode) {
+        localStorage.setItem("hs-anim-hud", mode);
+        b.dataset.animHud = mode;
+    };
+
+    window.hsSetAnimScan = function(mode) {
+        localStorage.setItem("hs-anim-scan", mode);
+        b.dataset.animScan = mode;
+    };
+
+    window.hsSetAnimHover = function(mode) {
+        localStorage.setItem("hs-anim-hover", mode);
+        b.dataset.animHover = mode;
+    };
+}
+
+/* ============================================================
+   SCAN VERTICAL HUD (au changement de thème)
+============================================================ */
+function hsTriggerScanEffect() {
+    const mode = document.body.dataset.animScan || "light";
+    if (mode === "off") return;
+
+    const container = document.getElementById("module-container");
+    if (!container) return;
+
+    // Reset éventuel pour pouvoir relancer l'anim
+    container.classList.remove("hud-scan-effect");
+    // force reflow pour relancer l'animation
+    void container.offsetWidth;
+    container.classList.add("hud-scan-effect");
+
+    setTimeout(() => {
+        container.classList.remove("hud-scan-effect");
+    }, 1800);
 }
 
 /* ============================================================
@@ -116,7 +189,12 @@ function hsInitIntro() {
   const intro = document.getElementById("hs-intro-overlay");
   if (!intro) return;
 
-  // on laisse l'intro visible un court instant puis on la fade out
+  // si animations d'intro désactivées, on enlève directement
+  if (document.body.dataset.animIntro === "off") {
+    if (intro.parentNode) intro.parentNode.removeChild(intro);
+    return;
+  }
+
   setTimeout(() => {
     intro.classList.add("hide");
   }, 1200);
@@ -133,6 +211,7 @@ function hsInitIntro() {
 ============================================================ */
 document.addEventListener("DOMContentLoaded", () => {
   hsInitTheme();
+  hsInitAnimations();
   hsInitNavigation();
   hsInitIntro();
 });
