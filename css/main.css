@@ -1,468 +1,251 @@
 /* ============================================================
-   Layout global
-============================================================ */
+   HOLISTIC STUDIO — main.css
+   Structure / Layout / HUD / Swipe Sidebar
+   ============================================================ */
 
-*,
-*::before,
-*::after {
-  box-sizing: border-box;
-}
+/* Reset léger */
 
-html,
-body {
+* {
   margin: 0;
   padding: 0;
-  font-family: system-ui, -apple-system, BlinkMacSystemFont, "SF Pro Text",
-    "Helvetica Neue", Arial, sans-serif;
+  box-sizing: border-box;
+  -webkit-tap-highlight-color: transparent;
 }
 
-body {
-  min-height: 100vh;
-  background-color: var(--bg);
-  color: var(--fg);
+html, body {
+  height: 100%;
+  overflow-x: hidden;
+  font-family: system-ui, sans-serif;
 }
 
 /* ============================================================
-   Header
+   HEADER
 ============================================================ */
 
 #hs-header {
+  width: 100%;
+  height: 62px;
+  background: var(--bg);
+  border-bottom: 1px solid rgba(255,255,255,0.06);
   display: flex;
   align-items: center;
+  padding: 0 16px;
   justify-content: space-between;
-  padding: 0.7rem 1rem;
-  position: sticky;
+  position: fixed;
   top: 0;
-  z-index: 40;
-  background: linear-gradient(
-    to bottom,
-    rgba(0, 0, 0, 0.9),
-    rgba(0, 0, 0, 0.75),
-    transparent
-  );
-  backdrop-filter: blur(12px);
+  z-index: 900;
+}
+
+#hs-header .logo-container img {
+  height: 42px;
+  width: auto;
+  object-fit: contain;
+  filter: drop-shadow(0 0 12px var(--glow));
 }
 
 .menu-btn {
+  background: none;
   border: none;
-  background: rgba(0, 0, 0, 0.6);
+  font-size: 28px;
   color: var(--fg);
-  border-radius: 999px;
-  padding: 0.45rem 0.7rem;
-  font-size: 1.1rem;
-  box-shadow: 0 0 8px rgba(0, 0, 0, 0.6);
-}
-
-.logo-container {
-  display: flex;
-  align-items: center;
-  gap: 0.6rem;
-}
-
-.logo-container img {
-  height: 40px;
-  width: 40px;
-  border-radius: 999px;
-  object-fit: cover;
-}
-
-.logo-title {
-  letter-spacing: 0.25em;
-  font-size: 0.85rem;
-  text-transform: uppercase;
+  cursor: pointer;
+  padding: 6px;
 }
 
 .header-right {
   display: flex;
-  align-items: center;
-  gap: 0.5rem;
+  gap: 12px;
 }
 
-.theme-btn,
-.nav-icon {
-  border-radius: 999px;
-  border: 1px solid var(--field-border);
-  background: rgba(0, 0, 0, 0.5);
-  padding: 0.35rem 0.65rem;
+.theme-btn {
+  background: rgb(from var(--accent) r g b / 0.22);
+  border: 1px solid var(--accent);
+  color: var(--fg);
+  padding: 6px 10px;
+  border-radius: 20px;
+  cursor: pointer;
+}
+
+/* ============================================================
+   TOP NAV (Desktop)
+============================================================ */
+
+#hs-nav {
+  margin-top: 62px;
+  width: 100%;
+  display: flex;
+  gap: 8px;
+  padding: 12px 12px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+#hs-nav button[data-module="settings"] {
+  display: none !important; /* suppression définitive */
+}
+
+/* ============================================================
+   NAV BUTTONS
+============================================================ */
+
+.nav-btn {
+  padding: 10px 16px;
+  border-radius: 22px;
   font-size: 1rem;
 }
 
 /* ============================================================
-   Nav top
-============================================================ */
-
-#hs-nav {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.4rem;
-  padding: 0.5rem 1rem 0.7rem;
-}
-
-.nav-btn {
-  border: none;
-  border-radius: 999px;
-  padding: 0.45rem 0.9rem;
-  background: var(--nav-pill-bg, rgba(0, 0, 0, 0.6));
-  color: var(--fg);
-  font-size: 0.9rem;
-  cursor: pointer;
-  transition: background 0.18s ease, transform 0.16s ease, box-shadow 0.18s ease;
-}
-
-.nav-btn:hover {
-  transform: translateY(-1px);
-}
-
-/* ============================================================
-   Sidebar
+   SIDEBAR
 ============================================================ */
 
 #hs-sidebar {
   position: fixed;
   top: 0;
-  left: 0;
+  left: -280px;
   width: 260px;
-  height: 100vh;
-  background: rgba(0, 0, 0, 0.95);
-  backdrop-filter: blur(18px);
-  padding: 1rem;
-  transform: translateX(-100%);
-  transition: transform 0.25s ease-out;
-  z-index: 60;
-  display: flex;
-  flex-direction: column;
-  gap: 0.4rem;
+  height: 100%;
+  background: var(--card);
+  box-shadow: 4px 0 12px rgba(0,0,0,0.35);
+  padding: 80px 16px 20px;
+  z-index: 950;
+  transition: left 0.28s ease;
+  overflow-y: auto;
 }
 
-#hs-sidebar h2 {
-  margin-top: 0;
-  margin-bottom: 0.6rem;
-  font-size: 1.1rem;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-}
-
-#hs-sidebar .nav-btn {
-  width: 100%;
-  justify-content: flex-start;
+#hs-sidebar.open {
+  left: 0;
 }
 
 #hs-sidebar-backdrop {
   position: fixed;
   inset: 0;
-  background: rgba(0, 0, 0, 0.5);
+  background: rgba(0,0,0,0.4);
+  z-index: 940;
   opacity: 0;
-  pointer-events: none;
-  transition: opacity 0.2s ease-out;
-  z-index: 55;
+  visibility: hidden;
+  transition: 0.25s;
 }
 
-body.sidebar-open #hs-sidebar {
-  transform: translateX(0);
-}
-
-body.sidebar-open #hs-sidebar-backdrop {
+#hs-sidebar-backdrop.visible {
   opacity: 1;
-  pointer-events: auto;
+  visibility: visible;
+}
+
+/* Swipe gestures */
+
+body {
+  touch-action: pan-y;
+}
+
+#hs-sidebar {
+  touch-action: none;
+}
+
+.sidebar-swipe-zone {
+  position: fixed;
+  left: 0;
+  top: 0;
+  width: 22px;
+  height: 100vh;
+  z-index: 9999;
 }
 
 /* ============================================================
-   Main + cartes
+   MAIN
 ============================================================ */
 
 #hs-main {
-  padding: 0 0.75rem 1.5rem;
-}
-
-.hs-section {
-  max-width: 960px;
-  margin: 0 auto;
-}
-
-.card {
-  background: var(--card, rgba(0, 0, 0, 0.7));
-  border-radius: 1.2rem;
-  padding: 1.3rem 1.1rem;
-  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.6);
-}
-
-/* Settings card */
-.hs-settings-card {
-  margin-top: 0.8rem;
-}
-
-.hs-settings-grid {
-  display: grid;
-  gap: 1.25rem;
-}
-
-.hs-setting-block h3 {
-  margin-top: 0;
-  margin-bottom: 0.3rem;
-}
-
-.hs-setting-help {
-  margin-top: 0;
-  margin-bottom: 0.8rem;
-  font-size: 0.9rem;
-  opacity: 0.8;
-}
-
-.hs-settings-footer {
-  margin-top: 1.2rem;
-  font-size: 0.85rem;
-  opacity: 0.8;
-}
-
-/* ============================================================
-   Formulaires
-============================================================ */
-
-.hs-field {
-  display: flex;
-  flex-direction: column;
-  gap: 0.3rem;
-}
-
-.hs-field label {
-  font-size: 0.85rem;
-  opacity: 0.85;
-}
-
-input[type="text"],
-input[type="email"],
-input[type="date"],
-input[type="time"],
-textarea,
-select {
-  width: 100%;
-  padding: 0.6rem 0.75rem;
-  border-radius: 999px;
-  border: 1px solid var(--field-border, rgba(255, 255, 255, 0.15));
-  background: var(--field-bg, rgba(0, 0, 0, 0.7));
-  color: var(--fg);
-  font-size: 0.95rem;
-  outline: none;
-}
-
-textarea {
-  border-radius: 1.1rem;
-  min-height: 120px;
-  resize: vertical;
-}
-
-input:focus,
-textarea:focus,
-select:focus {
-  border-color: var(--accent);
-  box-shadow: 0 0 0 1px var(--accent-soft);
-}
-
-/* checkboxes */
-input[type="checkbox"] {
-  accent-color: var(--accent);
-  width: 18px;
-  height: 18px;
-  margin-right: 0.45rem;
-}
-
-/* ============================================================
-   Loader
-============================================================ */
-
-#hs-loader {
-  display: none;
-  align-items: center;
-  justify-content: center;
-  padding: 2rem 0;
-}
-
-.hud-loader {
+  margin-top: 110px;
+  padding: 18px;
   position: relative;
-  width: 60px;
-  height: 60px;
+  min-height: calc(100vh - 110px);
 }
 
-.hud-ring {
-  width: 100%;
-  height: 100%;
-  border-radius: 999px;
-  border: 2px solid var(--accent);
-  animation: hud-spin 1.8s linear infinite;
+#module-container {
+  position: relative;
+  min-height: 280px;
+  animation: fadeIn 0.35s ease;
 }
 
-.hud-dot {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  width: 12px;
-  height: 12px;
-  border-radius: 999px;
-  background: var(--accent);
-  transform: translate(-50%, -50%);
-  animation: hud-pulse 1.4s ease-in-out infinite;
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(6px); }
+  to { opacity: 1; transform: translateY(0); }
 }
 
 /* ============================================================
-   Intro overlay
+   SCANNER LINE
+============================================================ */
+
+.scanner-line {
+  position: absolute;
+  width: 100%;
+  height: 3px;
+}
+
+/* ============================================================
+   INTRO OVERLAY — LOGO EN AVANT-PLAN
 ============================================================ */
 
 #hs-intro-overlay {
-  position: fixed;
-  inset: 0;
-  background: radial-gradient(
-      circle at center,
-      rgba(0, 0, 0, 0.85),
-      rgba(0, 0, 0, 0.98)
-    );
   display: flex;
-  align-items: center;
+  flex-direction: column;
   justify-content: center;
-  z-index: 80;
-  transition: opacity 0.5s ease-out;
+  align-items: center;
 }
 
-#hs-intro-overlay.hs-intro-hidden {
-  opacity: 0;
-  pointer-events: none;
-}
-
-.intro-center {
-  text-align: center;
-}
-
-.intro-logo-wrap img {
-  width: 190px;
-  max-width: 70vw;
-  border-radius: 32px;
-  object-fit: cover;
-}
-
-.intro-loader {
-  margin: 1.2rem auto 0.6rem;
-}
-
-.intro-text {
-  letter-spacing: 0.25em;
-  text-transform: uppercase;
-  font-size: 0.85rem;
-  opacity: 0.9;
+#hs-intro-overlay img {
+  width: 240px !important;
+  max-width: 65vw;
+  filter: drop-shadow(0 0 20px var(--glow));
 }
 
 /* ============================================================
-   Scanner overlay
+   CARDS / LAYOUT TEXTE
 ============================================================ */
 
-#hs-scan-overlay {
-  position: fixed;
-  inset: 96px 0 0 0;
-  pointer-events: none;
-  z-index: 10;
-  display: none;
+.card h2, .card h3, .card h4 {
+  margin-bottom: 12px;
 }
 
-.scan-bar {
-  width: 100%;
-  height: 130px;
-  opacity: 0.16;
-  animation: scan-move 3.2s linear infinite;
+.card p {
+  line-height: 1.5;
+  opacity: 0.92;
 }
 
-/* medium / full seulement */
-body[data-anim="medium"] #hs-scan-overlay,
-body[data-anim="full"] #hs-scan-overlay {
+/* ============================================================
+   FORMS
+============================================================ */
+
+label {
+  font-weight: 600;
   display: block;
+  margin: 14px 0 4px;
+}
+
+select {
+  width: 100%;
+  font-size: 1.05rem;
 }
 
 /* ============================================================
-   Animations & niveaux
+   MOBILE ADJUSTMENTS
 ============================================================ */
 
-.anim-soft {
-  animation-duration: 2.4s;
-}
+@media (max-width: 450px) {
 
-/* Logo glow */
-.logo-glow {
-  animation: glow-pulse 2.4s ease-in-out infinite;
-}
-
-/* niveaux d'animations */
-body[data-anim="off"] .anim-soft,
-body[data-anim="off"] .logo-glow,
-body[data-anim="off"] .hud-ring,
-body[data-anim="off"] .hud-dot {
-  animation: none !important;
-  box-shadow: none !important;
-}
-
-body[data-anim="low"] .anim-soft {
-  animation-duration: 3.5s;
-}
-
-body[data-anim="full"] .anim-soft {
-  animation-duration: 1.6s;
-}
-
-/* ============================================================
-   Media queries
-============================================================ */
-
-@media (min-width: 768px) {
-  #hs-main {
-    padding: 0 1.4rem 2rem;
+  #hs-header {
+    height: 60px;
   }
 
-  .card {
-    padding: 1.5rem 1.6rem;
+  #hs-header .logo-container img {
+    height: 36px;
   }
 
-  .hs-settings-grid {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
+  #hs-nav {
+    padding: 10px;
   }
 
-  #hs-scan-overlay {
-    inset: 110px 0 0 0;
-  }
-}
-
-/* ============================================================
-   Keyframes
-============================================================ */
-
-@keyframes hud-spin {
-  to {
-    transform: rotate(360deg);
-  }
-}
-
-@keyframes hud-pulse {
-  0%,
-  100% {
-    transform: translate(-50%, -50%) scale(0.9);
-    opacity: 0.6;
-  }
-  50% {
-    transform: translate(-50%, -50%) scale(1.1);
-    opacity: 1;
-  }
-}
-
-@keyframes glow-pulse {
-  0%,
-  100% {
-    filter: drop-shadow(0 0 6px var(--accent-soft));
-  }
-  50% {
-    filter: drop-shadow(0 0 22px var(--accent-soft));
-  }
-}
-
-@keyframes scan-move {
-  0% {
-    transform: translateY(-140px);
-  }
-  100% {
-    transform: translateY(100vh);
+  .nav-btn {
+    padding: 8px 14px;
   }
 }
