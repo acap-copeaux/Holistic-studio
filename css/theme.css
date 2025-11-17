@@ -52,7 +52,7 @@ body[data-theme="light-1"] {
   --accent: #0069ce;
   --card: #ffffff;
 
-  --surface: #d9e9ff;   /* bleu clair */
+  --surface: #d9e9ff;
   --surface-fg: #1a2c3a;
 }
 
@@ -65,7 +65,7 @@ body[data-theme="light-2"] {
   --accent: #e06d00;
   --card: #ffffff;
 
-  --surface: #ffe9d2;      /* orange pâle */
+  --surface: #ffe9d2;
   --surface-fg: #3a2e22;
 }
 
@@ -78,7 +78,7 @@ body[data-theme="light-3"] {
   --accent: #00c86a;
   --card: #ffffff;
 
-  --surface: #d7ffea;     /* vert menthe clair */
+  --surface: #d7ffea;
   --surface-fg: #00331f;
 }
 
@@ -87,10 +87,11 @@ body[data-theme="light-3"] {
 ============================================================ */
 
 * {
-  transition: background-color 0.3s ease,
-              color 0.3s ease,
-              border-color 0.3s ease,
-              box-shadow 0.3s ease;
+  transition: background-color 0.35s ease,
+              color 0.35s ease,
+              border-color 0.35s ease,
+              box-shadow 0.35s ease,
+              transform 0.2s ease;
 }
 
 body {
@@ -106,18 +107,20 @@ body {
   padding: 20px;
   box-shadow: 0 8px 20px rgba(0,0,0,0.15);
 }
+.card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 10px 28px rgba(0,0,0,0.22);
+}
 
 /* Liens */
 a {
   color: var(--accent);
   text-decoration: none;
 }
-a:hover {
-  opacity: 0.8;
-}
+a:hover { opacity: 0.8; }
 
 /* ============================================================
-   NAVIGATION — boutons premium
+   NAVIGATION — HUD PREMIUM
 ============================================================ */
 
 .nav-btn {
@@ -131,19 +134,39 @@ a:hover {
 }
 
 .nav-btn:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 6px 18px rgba(0,0,0,0.15);
   border-color: var(--accent);
-  box-shadow: 0 4px 12px rgba(0,0,0,0.12);
 }
 
 .nav-btn.active {
+  position: relative;
   background: var(--accent);
-  color: #fff;
+  color: white;
   box-shadow: 0 4px 16px var(--accent);
   transform: translateY(-2px);
 }
 
+.nav-btn.active::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: -3px;
+  height: 2px;
+  width: 100%;
+  background: var(--accent);
+  animation: hud-scan 2s linear infinite;
+  opacity: 0.7;
+}
+
+@keyframes hud-scan {
+  0% { opacity: 0; width: 0%; }
+  50% { opacity: 1; width: 100%; }
+  100% { opacity: 0; width: 0%; }
+}
+
 /* ============================================================
-   FORMULAIRES — champs premium HUD
+   FORMULAIRES — HUD PREMIUM
 ============================================================ */
 
 input,
@@ -158,24 +181,24 @@ textarea {
   box-shadow: inset 0 0 8px rgba(0,0,0,0.07);
 }
 
-input:focus,
-select:focus,
-textarea:focus {
-  outline: none;
-  box-shadow:
-    0 0 0 3px rgba(var(--accent-rgb), 0.25),
-    0 0 10px var(--accent);
-  border-color: var(--accent);
-}
-
-/* Placeholder */
 input::placeholder,
 textarea::placeholder {
   color: var(--surface-fg);
   opacity: 0.6;
 }
 
-/* Boutons internes, validation, etc. */
+input:focus,
+select:focus,
+textarea:focus {
+  outline: none;
+  border-color: var(--accent);
+  box-shadow:
+    0 0 0 3px color-mix(in srgb, var(--accent) 35%, transparent),
+    0 0 14px var(--accent);
+  transform: translateY(-1px);
+}
+
+/* Boutons internes */
 button.btn {
   background: var(--accent);
   color: #fff;
@@ -187,6 +210,49 @@ button.btn {
   box-shadow: 0 4px 12px rgba(0,0,0,0.2);
 }
 
-button.btn:hover {
-  opacity: 0.9;
+button.btn:hover { opacity: 0.9; }
+
+/* ============================================================
+   LOADER HUD PREMIUM
+============================================================ */
+
+.hud-loader {
+  position: relative;
+  width: 80px;
+  height: 80px;
+  margin: 40px auto;
+  display: none;
+}
+
+.hud-ring {
+  width: 100%;
+  height: 100%;
+  border: 4px solid var(--accent);
+  border-radius: 50%;
+  box-shadow: 0 0 18px var(--accent);
+  animation: hud-rotate 1.4s linear infinite;
+  opacity: 0.8;
+}
+
+.hud-dot {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 14px;
+  height: 14px;
+  background: var(--accent);
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  animation: hud-pulse 1s ease-in-out infinite;
+  box-shadow: 0 0 14px var(--accent);
+}
+
+@keyframes hud-rotate {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+@keyframes hud-pulse {
+  0%,100% { transform: translate(-50%,-50%) scale(0.9); opacity: 0.7; }
+  50%     { transform: translate(-50%,-50%) scale(1.25); opacity: 1; }
 }
