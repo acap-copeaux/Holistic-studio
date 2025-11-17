@@ -1,162 +1,126 @@
 /* ============================================================
-   THEMES HOLISTIC STUDIO — 6 thèmes
-   S'appliquent via body[data-theme="<id>"]
+   THEMES HOLISTIC STUDIO
+   3 thèmes sombres + 3 thèmes clairs
+   Utilisés via body[data-theme="xxx"]
 ============================================================ */
 
-/* SOMBRE 1 — Armor Vision Bleu */
+/* Sombre 1 — Armor Vision Bleu */
 body[data-theme="dark-1"] {
-  --bg: #05070c;
-  --bg-alt: #0b0f16;
-  --card: #111822;
+  --bg: #05070b;
   --fg: #d9e6ff;
-  --fg-soft: #9fb5d9;
   --accent: #4aa8ff;
-  --accent-soft: rgba(74,168,255,0.18);
-  --border: rgba(255,255,255,0.06);
-  --input-bg: #070b14;
+  --accent-soft: rgba(74, 168, 255, 0.6);
+  --card: #101621;
+  --field-bg: #0b101a;
+  --field-border: rgba(74, 168, 255, 0.45);
+  --nav-pill-bg: #141b26;
 }
 
-/* SOMBRE 2 — X-Vision Orange */
+/* Sombre 2 — X-Vision Orange (défaut) */
 body[data-theme="dark-2"] {
-  --bg: #080402;
-  --bg-alt: #120805;
-  --card: #1a120d;
+  --bg: #070503;
   --fg: #ffe8d9;
-  --fg-soft: #f1bfa0;
   --accent: #ff7f28;
-  --accent-soft: rgba(255,127,40,0.20);
-  --border: rgba(255,255,255,0.06);
-  --input-bg: #0d0704;
+  --accent-soft: rgba(255, 127, 40, 0.6);
+  --card: #18100b;
+  --field-bg: #120c07;
+  --field-border: rgba(255, 127, 40, 0.55);
+  --nav-pill-bg: #22150e;
 }
 
-/* SOMBRE 3 — SHIELD Vert */
+/* Sombre 3 — SHIELD Vert */
 body[data-theme="dark-3"] {
-  --bg: #020a06;
-  --bg-alt: #07120c;
-  --card: #0c1a12;
+  --bg: #030a06;
   --fg: #d4ffe8;
-  --fg-soft: #9fe0c0;
   --accent: #2eff95;
-  --accent-soft: rgba(46,255,149,0.20);
-  --border: rgba(255,255,255,0.06);
-  --input-bg: #030b07;
+  --accent-soft: rgba(46, 255, 149, 0.6);
+  --card: #07140e;
+  --field-bg: #07120d;
+  --field-border: rgba(46, 255, 149, 0.55);
+  --nav-pill-bg: #0a1b12;
 }
 
-/* CLAIR 1 — Armor Vision Clair */
+/* Clair 1 — Armor Vision Clair */
 body[data-theme="light-1"] {
   --bg: #f2f8ff;
-  --bg-alt: #e7f0ff;
-  --card: #ffffff;
   --fg: #1b2e40;
-  --fg-soft: #4b6480;
   --accent: #0069ce;
-  --accent-soft: rgba(0,105,206,0.10);
-  --border: rgba(0,0,0,0.08);
-  --input-bg: #f7faff;
+  --accent-soft: rgba(0, 105, 206, 0.6);
+  --card: #ffffff;
+  --field-bg: #ffffff;
+  --field-border: rgba(0, 105, 206, 0.35);
+  --nav-pill-bg: #e2ecfb;
 }
 
-/* CLAIR 2 — X-Vision Clair */
+/* Clair 2 — X-Vision Clair */
 body[data-theme="light-2"] {
   --bg: #fff5e9;
-  --bg-alt: #ffe9d1;
-  --card: #ffffff;
   --fg: #412e1d;
-  --fg-soft: #7a5a3b;
   --accent: #e06d00;
-  --accent-soft: rgba(224,109,0,0.11);
-  --border: rgba(0,0,0,0.08);
-  --input-bg: #fff4e6;
+  --accent-soft: rgba(224, 109, 0, 0.6);
+  --card: #ffffff;
+  --field-bg: #ffffff;
+  --field-border: rgba(224, 109, 0, 0.35);
+  --nav-pill-bg: #ffe5c7;
 }
 
-/* CLAIR 3 — SHIELD Clair */
+/* Clair 3 — SHIELD Clair */
 body[data-theme="light-3"] {
   --bg: #eafff3;
-  --bg-alt: #d2f5e2;
-  --card: #ffffff;
   --fg: #003d26;
-  --fg-soft: #2a6d52;
   --accent: #00c86a;
-  --accent-soft: rgba(0,200,106,0.12);
-  --border: rgba(0,0,0,0.08);
-  --input-bg: #f3fff9;
+  --accent-soft: rgba(0, 200, 106, 0.6);
+  --card: #ffffff;
+  --field-bg: #ffffff;
+  --field-border: rgba(0, 200, 106, 0.35);
+  --nav-pill-bg: #d5fbe5;
 }
 
 /* ============================================================
-   BASE + STRUCTURE
+   APPLICATION GENERALE
 ============================================================ */
 
 body {
-  background: radial-gradient(circle at top left, var(--bg-alt), var(--bg));
+  background-color: var(--bg);
   color: var(--fg);
 }
 
-/* Cartes */
-.card {
-  background: var(--card);
-  border: 1px solid var(--border);
-}
-
-/* Liens */
-a {
-  color: var(--accent);
-}
-
-/* Inputs / selects / champs */
-input[type="text"],
-input[type="email"],
-input[type="date"],
-input[type="time"],
-input[type="number"],
-textarea,
-select {
-  background: var(--input-bg);
-  color: var(--fg);
-  border: 1px solid var(--accent-soft);
-}
-
-input::placeholder,
-textarea::placeholder {
-  color: var(--fg-soft);
-}
-
-/* Boutons nav */
-button.nav-btn {
-  background: var(--card);
-  color: var(--fg);
-}
-
-button.nav-btn.active {
+/* nav pill active */
+.nav-btn.active {
   background: var(--accent);
   color: #fff;
+  box-shadow: 0 0 22px var(--accent-soft);
+}
+
+/* boutons / champs */
+button,
+input,
+select,
+textarea {
+  color: var(--fg);
+}
+
+/* loader & logo utilisent l'accent */
+.hud-ring {
+  border-color: var(--accent);
   box-shadow: 0 0 14px var(--accent-soft);
 }
 
-/* Checkboxes */
-.hs-checkbox-row {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
+.hud-dot {
+  background-color: var(--accent);
+  box-shadow: 0 0 10px var(--accent-soft);
 }
 
-.hs-checkbox-row input[type="checkbox"] {
-  width: 18px;
-  height: 18px;
-  accent-color: var(--accent);
+.logo-glow img {
+  box-shadow: 0 0 22px var(--accent-soft);
 }
 
-/* ============================================================
-   GLOW DYNAMIQUE LOGO
-============================================================ */
-
-#hs-logo {
-  width: 52px;
-  height: 52px;
-  filter: drop-shadow(0 0 10px var(--accent));
-  animation: pulseGlow 2.4s ease-in-out infinite;
-}
-
-@keyframes pulseGlow {
-  0%   { filter: drop-shadow(0 0 6px var(--accent)); }
-  50%  { filter: drop-shadow(0 0 22px var(--accent)); }
-  100% { filter: drop-shadow(0 0 6px var(--accent)); }
+/* scanner */
+.scan-bar {
+  background: linear-gradient(
+    to bottom,
+    transparent,
+    var(--accent-soft),
+    transparent
+  );
 }
