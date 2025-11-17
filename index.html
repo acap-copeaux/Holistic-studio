@@ -17,7 +17,7 @@
       padding: 1rem;
     }
 
-    /* Loader */
+    /* Loader Fallback */
     #hs-loader {
       display: none;
       text-align: center;
@@ -28,22 +28,35 @@
   </style>
 </head>
 
+<!-- Thème initial (sera remplacé par app.js) -->
 <body data-theme="dark">
 
+  <!-- ============================================
+       INTRO ARMOR VISION
+  ============================================ -->
   <div id="hs-intro-overlay">
-  <div class="intro-ring">
-    <div class="intro-core"></div>
+    <div class="intro-ring">
+      <div class="intro-core"></div>
+    </div>
+    <div class="intro-text">Holistic Studio</div>
   </div>
-  <div class="intro-text">Holistic Studio</div>
-  </div>
-  
+
   <!-- ============================================
        HEADER
   ============================================ -->
   <header id="hs-header">
-    <h1 class="logo">Holistic Studio</h1>
+      <h1 class="logo">Holistic Studio</h1>
 
-    <button id="theme-toggle" class="theme-btn" onclick="hsToggleDarkLight()">🌗</button>  </header>
+      <div style="display:flex; gap:10px; align-items:center;">
+        <!-- Bouton Settings dans le header -->
+        <button data-module="settings" class="nav-btn" style="padding:8px 12px;">
+          ⚙️
+        </button>
+
+        <!-- Bascule clair/sombre -->
+        <button id="theme-toggle" class="theme-btn" onclick="hsToggleDarkLight()">🌗</button>
+      </div>
+  </header>
 
   <!-- ============================================
        NAVIGATION
@@ -59,9 +72,6 @@
     <button data-module="pricing" class="nav-btn">Tarifs</button>
     <button data-module="contact" class="nav-btn">Contact</button>
     <button data-module="legal" class="nav-btn">Légal</button>
-
-    <!-- AJOUT IMPORTANT -->
-    <button data-module="settings" class="nav-btn">⚙️</button>
   </nav>
 
   <!-- ============================================
@@ -69,10 +79,10 @@
   ============================================ -->
   <main id="hs-main">
 
-    <!-- Loader -->
+    <!-- Loader HUD -->
     <div id="hs-loader" class="hud-loader">
-    <div class="hud-ring"></div>
-    <div class="hud-dot"></div>
+        <div class="hud-ring"></div>
+        <div class="hud-dot"></div>
     </div> 
     
     <!-- Contenu dynamique -->
@@ -81,12 +91,16 @@
   </main>
 
   <!-- ============================================
-       SCRIPTS (ordre essentiel)
+       SCRIPTS
   ============================================ -->
   <script src="js/utils.js"></script>
+
+  <!-- Modules JS optionnels -->
   <script src="js/premium.js"></script>
   <script src="js/runes.js"></script>
   <!-- ajouter ici : yijing.js, mtc.js, totem.js, remedies.js, analysis.js -->
+
+  <!-- App Kernel -->
   <script src="js/app.js"></script>
 
 </body>
